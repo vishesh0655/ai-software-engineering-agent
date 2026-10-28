@@ -1,0 +1,6 @@
+requests
+chromadb
+fastapi
+uvicorn
+pytest
+python-dotenv

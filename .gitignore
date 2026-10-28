@@ -1,0 +1,32 @@
+# Local environment and virtual environments
+.env
+.env.*
+.venv/
+venv/
+env/
+
+# Python caches and coverage output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+
+# Local application data and logs
+data/chroma/
+data/task_backups/
+data/projects.json
+data/tasks.json
+*.sqlite
+*.sqlite3
+*.db
+*.db-*
+*.log
+tmp/
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+build/

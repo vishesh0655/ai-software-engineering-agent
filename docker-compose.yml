@@ -1,0 +1,32 @@
+services:
+  api:
+    build: .
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL_DOCKER:-http://host.docker.internal:11434}
+      OLLAMA_GENERATION_MODEL: ${OLLAMA_GENERATION_MODEL:-gemma4:latest}
+      OLLAMA_EMBEDDING_MODEL: ${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE:-16}
+      EMBEDDING_TIMEOUT: ${EMBEDDING_TIMEOUT:-120}
+      EMBEDDING_MAX_RETRIES: ${EMBEDDING_MAX_RETRIES:-3}
+      AGENT_MAX_ITERATIONS: ${AGENT_MAX_ITERATIONS:-8}
+      AGENT_MAX_TOOL_CALLS: ${AGENT_MAX_TOOL_CALLS:-8}
+      AGENT_MAX_INVALID_ACTIONS: ${AGENT_MAX_INVALID_ACTIONS:-2}
+      CHROMA_PATH: /app/data/chroma
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./data:/app/data
+      - ${PROJECTS_ROOT:-./projects}:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      - api
